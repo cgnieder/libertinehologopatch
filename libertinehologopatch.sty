@@ -1,0 +1,105 @@
+% --------------------------------------------------------------------------
+% the LIBERTINEHOLOGOPATCH package
+% 
+%   patch kerning of hologo's logos for usage with libertine
+% 
+% --------------------------------------------------------------------------
+% Clemens Niederberger
+% Web:    https://bitbucket.org/cgnieder/libertinehologopatch/
+% E-Mail: contact@mychemistry.eu
+% --------------------------------------------------------------------------
+% Copyright 2013 Clemens Niederberger
+% 
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+% 
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Clemens Niederberger.
+% --------------------------------------------------------------------------
+% The libertinehologopatch package consists of the files
+%  - libertinehologopatch.sty
+%  - README
+% --------------------------------------------------------------------------
+% If you have any ideas, questions, suggestions or bugs to report, please
+% feel free to contact me.
+% --------------------------------------------------------------------------
+\def\lbthlpt@date{2013/01/01}
+\def\lbthlpt@version{v0.1}
+\def\lbthlpt@description{%
+  patch kerning of logos provided by `hologo' for use with `libertine'}
+
+\ProvidesPackage{libertinehologopatch}[\lbthlpt@date\space\lbthlpt@version\space\lbthlpt@description]
+\RequirePackage{hologo,etoolbox,libertine}
+
+\def\lbthlpt@family@biolinumOsF{LinuxBiolinumT-OsF}
+\def\lbthlpt@family@biolinumLF{LinuxBiolinumT-LF}
+
+\def\lbthlpt@ifx#1#2{%
+  \ifx#1#2%
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+
+\def\lbthlpt@ifbiolinum{%
+  \ifboolexpr{
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumOsF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumLF}
+  }
+}
+% La
+\patchcmd\HoLogo@La
+  {\kern-.36em}
+  {\lbthlpt@ifbiolinum{\kern-.28em}{\kern-.32em}}
+  {}{}
+% LaTeX
+\patchcmd\HoLogo@LaTeX
+  {\kern-.15em}
+  {\lbthlpt@ifbiolinum{\kern-0.09em}{\kern-.11em}}
+  {}{}
+% XeLaTeX
+\patchcmd\HoLogo@XeLaTeX
+  {\kern-.13em}
+  {\lbthlpt@ifbiolinum{\kern-.11em}{\kern-.05em}}
+  {}{}
+% (La)TeX
+\patchcmd\HoLogo@LaTeXTeX
+  {\kern-.15em}
+  {\lbthlpt@ifbiolinum{\kern-.09em}{\kern-.06em}}
+  {}{}
+\patchcmd\HoLogo@LaTeXTeX
+  {\kern-.2em}
+  {\kern-.14em}
+  {}{}
+\patchcmd\HoLogo@LaTeXTeX
+  {\kern-.15em}
+  {\kern-.09em}
+  {}{}
+\cslet{HoLogo@(La)TeX}\HoLogo@LaTeXTeX
+
+\AtBeginDocument{
+  \renewrobustcmd\TeX{\hologo{TeX}}
+  \renewrobustcmd\LaTeX{\hologo{LaTeX}}
+  \renewrobustcmd\LaTeXe{\hologo{LaTeX2e}}
+  \ifdef\XeTeX
+    {\renewrobustcmd\XeTeX{\hologo{XeTeX}}}
+    {\newrobustcmd\XeTeX{\hologo{XeTeX}}}
+  \ifdef\XeLaTeX
+    {\renewrobustcmd\XeLaTeX{\hologo{XeLaTeX}}}
+    {\newrobustcmd\XeLaTeX{\hologo{XeLaTeX}}}
+  \ifdef\LuaTeX
+    {\renewrobustcmd\LuaTeX{\hologo{LuaTeX}}}
+    {\newrobustcmd\LuaTeX{\hologo{LuaTeX}}}
+  \ifdef\LuaLaTeX
+    {\renewrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
+    {\newrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
+}
+
+\endinput
