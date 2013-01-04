@@ -29,8 +29,8 @@
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/01/01}
-\def\lbthlpt@version{v0.1}
+\def\lbthlpt@date{2013/01/04}
+\def\lbthlpt@version{v0.1a}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine'}
 
@@ -88,6 +88,9 @@
   \renewrobustcmd\TeX{\hologo{TeX}}
   \renewrobustcmd\LaTeX{\hologo{LaTeX}}
   \renewrobustcmd\LaTeXe{\hologo{LaTeX2e}}
+  \ifdef\pdfLaTeX
+    {\renewrobustcmd\pdfLaTeX{\hologo{pdfLaTeX}}}
+    {\newrobustcmd\pdfLaTeX{\hologo{pdfLaTeX}}}
   \ifdef\XeTeX
     {\renewrobustcmd\XeTeX{\hologo{XeTeX}}}
     {\newrobustcmd\XeTeX{\hologo{XeTeX}}}
