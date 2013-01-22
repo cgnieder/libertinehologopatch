@@ -58,11 +58,17 @@
   }
 }
 
-% test for italics
+% test for italics:
 \def\lbthlpt@ifit{%
   \lbthlpt@ifx\f@shape\lbthlpt@itshape
 }
 \def\lbthlpt@itshape{it}
+
+% test for small caps:
+\def\lbthlpt@ifsc{%
+  \lbthlpt@ifx\f@shape\lbthlpt@scshape
+}
+\def\lbthlpt@scshape{sc}
 
 % ----------------------------------------------------------------------------
 % La: between L and A
@@ -145,4 +151,4 @@
 
 \endinput
 % TODO:
-- kursive Varianten sind noch zu gedrängt
+- LuaTeX : Libertine sc : zu große Lücke zwischen Lua und TeX
