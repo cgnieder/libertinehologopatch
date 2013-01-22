@@ -29,8 +29,8 @@
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/01/04}
-\def\lbthlpt@version{v0.1a}
+\def\lbthlpt@date{2013/01/22}
+\def\lbthlpt@version{v0.1b}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine'}
 
@@ -40,6 +40,8 @@
 \def\lbthlpt@family@biolinumOsF{LinuxBiolinumT-OsF}
 \def\lbthlpt@family@biolinumLF{LinuxBiolinumT-LF}
 
+% --------------------------------------------------------------------------
+% wrap \ifx:
 \def\lbthlpt@ifx#1#2{%
   \ifx#1#2%
     \expandafter\@firstoftwo
@@ -48,21 +50,56 @@
   \fi
 }
 
+% test for biolinum:
 \def\lbthlpt@ifbiolinum{%
   \ifboolexpr{
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumOsF} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumLF}
   }
 }
-% La
+
+% test for italics
+\def\lbthlpt@ifit{%
+  \lbthlpt@ifx\f@shape\lbthlpt@itshape
+}
+\def\lbthlpt@itshape{it}
+
+% ----------------------------------------------------------------------------
+% La: between L and A
 \patchcmd\HoLogo@La
   {\kern-.36em}
-  {\lbthlpt@ifbiolinum{\kern-.28em}{\kern-.32em}}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.23em}{\kern-.28em}}
+      {\lbthlpt@ifit{\kern-.25em}{\kern-.30em}}%
+  }
   {}{}
-% LaTeX
+% TeX: between T and eX
+\patchcmd\HoLogo@TeX
+  {\kern-.1667em}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.2000em}{\kern-.1667em}}
+      {\lbthlpt@ifit{\kern-.1667em}{\kern-.1667em}}%
+  }
+  {}{}
+% TeX: between Te and X
+\patchcmd\HoLogo@TeX
+  {\kern-.125em}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.065em}{\kern-.105em}}
+      {\lbthlpt@ifit{\kern-.105em}{\kern-.125em}}%
+  }
+  {}{}
+% LaTeX: between La and TeX
 \patchcmd\HoLogo@LaTeX
   {\kern-.15em}
-  {\lbthlpt@ifbiolinum{\kern-0.09em}{\kern-.11em}}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.13em}{\kern-0.085em}}
+      {\lbthlpt@ifit{\kern-.13em}{\kern-.11em}}%
+  }
   {}{}
 % XeLaTeX
 \patchcmd\HoLogo@XeLaTeX
@@ -84,6 +121,7 @@
   {}{}
 \cslet{HoLogo@(La)TeX}\HoLogo@LaTeXTeX
 
+% --------------------------------------------------------------------------
 \AtBeginDocument{
   \renewrobustcmd\TeX{\hologo{TeX}}
   \renewrobustcmd\LaTeX{\hologo{LaTeX}}
@@ -106,3 +144,5 @@
 }
 
 \endinput
+% TODO:
+- kursive Varianten sind noch zu gedrängt

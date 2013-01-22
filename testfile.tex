@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=1cm]{geometry}
+\setlength\parindent{0pt}
+\usepackage{libertinehologopatch}
+
+\newcommand\testlogos[1]{%
+  \begingroup
+    #1%
+    \TeX{}
+    \LaTeX{}
+    \LaTeXe{}
+    \pdfLaTeX{}
+    \XeTeX{}
+    \XeLaTeX{}
+    \LuaTeX{}
+    \LuaLaTeX
+  \endgroup
+}
+\newcommand\test[1]{%
+  \begingroup
+    #1%
+    \begin{tabular}{ll}
+           & \testlogos{} \\
+    it:    & \testlogos{\itshape}\\
+    sc:    & \testlogos{\scshape}\\
+    bf:    & \testlogos{\bfseries}\\
+    bf+it: & \testlogos{\bfseries\itshape}\\
+    bf+sc: & \testlogos{\bfseries\scshape}
+    \end{tabular}
+  \endgroup
+}
+
+\begin{document}
+\Large
+
+\section{Linux Libertine}
+\test{}
+
+\section{Linux Biolinum}
+\test{\sffamily}
+
+\end{document}
