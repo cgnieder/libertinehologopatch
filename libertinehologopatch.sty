@@ -1,7 +1,7 @@
 % --------------------------------------------------------------------------
 % the LIBERTINEHOLOGOPATCH package
 % 
-%   patch kerning of hologo's logos for usage with libertine
+%   patch kerning of hologo's logos for usage with the `libertine' package
 % 
 % --------------------------------------------------------------------------
 % Clemens Niederberger
@@ -29,8 +29,8 @@
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/01/22}
-\def\lbthlpt@version{v0.1b}
+\def\lbthlpt@date{2013/01/27}
+\def\lbthlpt@version{v0.1c}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine'}
 
@@ -71,7 +71,15 @@
 \def\lbthlpt@scshape{sc}
 
 % ----------------------------------------------------------------------------
+% save unpatched versions:
+\newcommand*\lbthlpt@save[1]{%
+  \csletcs{lbthlpt@unpatched@#1}{HoLogo@#1}}
+\newcommand*\lbthlpt@get@unpatched[1]{%
+  \csuse{lbthlpt@unpatched@#1}}
+
+% ----------------------------------------------------------------------------
 % La: between L and A
+\lbthlpt@save{La}
 \patchcmd\HoLogo@La
   {\kern-.36em}
   {%
@@ -81,6 +89,7 @@
   }
   {}{}
 % TeX: between T and eX
+\lbthlpt@save{TeX}
 \patchcmd\HoLogo@TeX
   {\kern-.1667em}
   {%
@@ -99,6 +108,7 @@
   }
   {}{}
 % LaTeX: between La and TeX
+\lbthlpt@save{LaTeX}
 \patchcmd\HoLogo@LaTeX
   {\kern-.15em}
   {%
@@ -108,11 +118,13 @@
   }
   {}{}
 % XeLaTeX
+\lbthlpt@save{XeLaTeX}
 \patchcmd\HoLogo@XeLaTeX
   {\kern-.13em}
   {\lbthlpt@ifbiolinum{\kern-.11em}{\kern-.05em}}
   {}{}
 % (La)TeX
+\lbthlpt@save{LaTeXTeX}
 \patchcmd\HoLogo@LaTeXTeX
   {\kern-.15em}
   {\lbthlpt@ifbiolinum{\kern-.09em}{\kern-.06em}}
@@ -147,6 +159,20 @@
   \ifdef\LuaLaTeX
     {\renewrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
     {\newrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
+  \@ifpackageloaded{hyperref}
+    {
+      \pdfstringdefDisableCommands
+        {
+          \def\TeX{TeX}
+          \def\LaTeX{LaTeX}
+          \def\LaTeXe{LaTeX 2e}
+          \def\pdfLaTeX{pdfLaTeX}
+          \def\XeTeX{XeTeX}
+          \def\XeLaTeX{XeLaTeX}
+          \def\LuaTeX{LuaTeX}
+          \def\LuaLaTeX{LuaLaTeX}
+        }
+    }{}
 }
 
 \endinput
