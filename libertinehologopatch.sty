@@ -30,7 +30,7 @@
 % feel free to contact me.
 % --------------------------------------------------------------------------
 \def\lbthlpt@date{2013/01/29}
-\def\lbthlpt@version{v0.1d}
+\def\lbthlpt@version{v0.1e}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine'}
 
@@ -85,7 +85,7 @@
   {%
     \lbthlpt@ifbiolinum
       {\lbthlpt@ifit{\kern-.23em}{\kern-.28em}}
-      {\lbthlpt@ifit{\kern-.25em}{\kern-.30em}}%
+      {\lbthlpt@ifit{\kern-.24em}{\kern-.29em}}%
   }
   {}{}
 % TeX: between T and eX
@@ -117,11 +117,33 @@
       {\lbthlpt@ifit{\kern-.13em}{\kern-.11em}}%
   }
   {}{}
-% XeLaTeX
+% Xe: between X and e
+\patchcmd\HoLogo@Xe
+  {\kern-.1em}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.05em}{\kern-.1em}}
+      {\lbthlpt@ifit{\kern-.05em}{\kern-.1em}}%
+  }
+  {}{}
+% XeTeX: between Xe and TeX
+\patchcmd\HoLogo@XeTeX
+  {\kern-.15em}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.24em}{\kern-.15em}}
+      {\lbthlpt@ifit{\kern-.235em}{\kern-.15em}}%
+  }
+  {}{}
+% XeLaTeX: between Xe an LaTeX
 \lbthlpt@save{XeLaTeX}
 \patchcmd\HoLogo@XeLaTeX
   {\kern-.13em}
-  {\lbthlpt@ifbiolinum{\kern-.11em}{\kern-.05em}}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.15em}{\kern-.09em}}
+      {\lbthlpt@ifit{\kern-.09em}{\kern-.025em}}%
+  }
   {}{}
 % (La)TeX
 \lbthlpt@save{LaTeXTeX}
