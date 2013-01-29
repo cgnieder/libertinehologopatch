@@ -30,7 +30,7 @@
 % feel free to contact me.
 % --------------------------------------------------------------------------
 \def\lbthlpt@date{2013/01/29}
-\def\lbthlpt@version{v0.1e}
+\def\lbthlpt@version{v0.1f}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine'}
 
@@ -78,6 +78,7 @@
   \csuse{lbthlpt@unpatched@#1}}
 
 % ----------------------------------------------------------------------------
+% the patching:
 % La: between L and A
 \lbthlpt@save{La}
 \patchcmd\HoLogo@La
@@ -118,6 +119,7 @@
   }
   {}{}
 % Xe: between X and e
+\lbthlpt@save{Xe}
 \patchcmd\HoLogo@Xe
   {\kern-.1em}
   {%
@@ -127,6 +129,7 @@
   }
   {}{}
 % XeTeX: between Xe and TeX
+\lbthlpt@save{XeTeX}
 \patchcmd\HoLogo@XeTeX
   {\kern-.15em}
   {%
@@ -162,10 +165,14 @@
 \cslet{HoLogo@(La)TeX}\HoLogo@LaTeXTeX
 
 % --------------------------------------------------------------------------
+% shortcuts (with pdf bookmark support via hyperref)
 \AtBeginDocument{
   \renewrobustcmd\TeX{\hologo{TeX}}
   \renewrobustcmd\LaTeX{\hologo{LaTeX}}
   \renewrobustcmd\LaTeXe{\hologo{LaTeX2e}}
+  \ifdef\LaTeXTeX
+    {\renewrobustcmd\LaTeXTeX{\hologo{LaTeXTeX}}}
+    {\newrobustcmd\LaTeXTeX{\hologo{LaTeXTeX}}}
   \ifdef\pdfTeX
     {\renewrobustcmd\pdfTeX{\hologo{pdfTeX}}}
     {\newrobustcmd\pdfTeX{\hologo{pdfTeX}}}
@@ -191,6 +198,8 @@
           \def\TeX{TeX}
           \def\LaTeX{LaTeX}
           \def\LaTeXe{LaTeX 2e}
+          \def\LaTeXTeX{(La)TeX}
+          \def\pdfTeX{pdfTeX}
           \def\pdfLaTeX{pdfLaTeX}
           \def\XeTeX{XeTeX}
           \def\XeLaTeX{XeLaTeX}
