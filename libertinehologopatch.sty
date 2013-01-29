@@ -30,15 +30,27 @@
 % feel free to contact me.
 % --------------------------------------------------------------------------
 \def\lbthlpt@date{2013/01/29}
-\def\lbthlpt@version{v0.1f}
+\def\lbthlpt@version{v0.2}
 \def\lbthlpt@description{%
-  patch kerning of logos provided by `hologo' for use with `libertine'}
+  patch kerning of logos provided by `hologo' for use with `libertine' (CN)}
 
-\ProvidesPackage{libertinehologopatch}[\lbthlpt@date\space\lbthlpt@version\space\lbthlpt@description]
-\RequirePackage{hologo,etoolbox,libertine}
+\ProvidesPackage{libertinehologopatch}%
+  [\lbthlpt@date\space\lbthlpt@version\space\lbthlpt@description]
+\RequirePackage{etoolbox}
+\RequirePackage{hologo}[2012/04/26]
+\RequirePackage{libertine}[2012/12/27]
 
 \def\lbthlpt@family@biolinumOsF{LinuxBiolinumT-OsF}
 \def\lbthlpt@family@biolinumLF{LinuxBiolinumT-LF}
+
+\def\lbthlpt@failure#1#2{%
+  \PackageWarning{libertinehologopatch}
+    {Patching of logo `#1' (\string#2) failed.}
+}
+\def\lbthlpt@success#1#2{%
+  \PackageInfo{libertinehologopatch}
+    {Patching of logo `#1' (\string#2) successful.}
+}
 
 % --------------------------------------------------------------------------
 % wrap \ifx:
@@ -77,9 +89,13 @@
 \newcommand*\lbthlpt@get@unpatched[1]{%
   \csuse{lbthlpt@unpatched@#1}}
 
+% restore unpatched versions:
+\newcommand*\lbthlpt@restore[1]{%
+  \csletcs{HoLogo@#1}{lbthlpt@unpatched@#1}}
+
 % ----------------------------------------------------------------------------
 % the patching:
-% La: between L and A
+%%% La: between L and A
 \lbthlpt@save{La}
 \patchcmd\HoLogo@La
   {\kern-.36em}
@@ -88,8 +104,11 @@
       {\lbthlpt@ifit{\kern-.23em}{\kern-.28em}}
       {\lbthlpt@ifit{\kern-.24em}{\kern-.29em}}%
   }
-  {}{}
-% TeX: between T and eX
+  {\lbthlpt@success{La}{\HoLogo@La}}
+  {\lbthlpt@failure{La}{\HoLogo@La}}
+
+%%% TeX
+% between T and eX
 \lbthlpt@save{TeX}
 \patchcmd\HoLogo@TeX
   {\kern-.1667em}
@@ -98,8 +117,9 @@
       {\lbthlpt@ifit{\kern-.2000em}{\kern-.1667em}}
       {\lbthlpt@ifit{\kern-.1667em}{\kern-.1667em}}%
   }
-  {}{}
-% TeX: between Te and X
+  {\lbthlpt@success{TeX}{\HoLogo@TeX}}
+  {\lbthlpt@failure{TeX}{\HoLogo@TeX}}
+% between Te and X
 \patchcmd\HoLogo@TeX
   {\kern-.125em}
   {%
@@ -107,8 +127,10 @@
       {\lbthlpt@ifit{\kern-.065em}{\kern-.105em}}
       {\lbthlpt@ifit{\kern-.105em}{\kern-.125em}}%
   }
-  {}{}
-% LaTeX: between La and TeX
+  {\lbthlpt@success{TeX}{\HoLogo@TeX}}
+  {\lbthlpt@failure{TeX}{\HoLogo@TeX}}
+
+%%% LaTeX: between La and TeX
 \lbthlpt@save{LaTeX}
 \patchcmd\HoLogo@LaTeX
   {\kern-.15em}
@@ -117,8 +139,10 @@
       {\lbthlpt@ifit{\kern-.13em}{\kern-0.085em}}
       {\lbthlpt@ifit{\kern-.13em}{\kern-.11em}}%
   }
-  {}{}
-% Xe: between X and e
+  {\lbthlpt@success{LaTeX}{\HoLogo@LaTeX}}
+  {\lbthlpt@failure{LaTeX}{\HoLogo@LaTeX}}
+
+%%% Xe: between X and e
 \lbthlpt@save{Xe}
 \patchcmd\HoLogo@Xe
   {\kern-.1em}
@@ -127,8 +151,10 @@
       {\lbthlpt@ifit{\kern-.05em}{\kern-.1em}}
       {\lbthlpt@ifit{\kern-.05em}{\kern-.1em}}%
   }
-  {}{}
-% XeTeX: between Xe and TeX
+  {\lbthlpt@success{Xe}{\HoLogo@Xe}}
+  {\lbthlpt@failure{Xe}{\HoLogo@Xe}}
+
+%%% XeTeX: between Xe and TeX
 \lbthlpt@save{XeTeX}
 \patchcmd\HoLogo@XeTeX
   {\kern-.15em}
@@ -137,8 +163,10 @@
       {\lbthlpt@ifit{\kern-.24em}{\kern-.15em}}
       {\lbthlpt@ifit{\kern-.235em}{\kern-.15em}}%
   }
-  {}{}
-% XeLaTeX: between Xe an LaTeX
+  {\lbthlpt@success{XeTeX}{\HoLogo@XeTeX}}
+  {\lbthlpt@failure{XeTeX}{\HoLogo@XeTeX}}
+
+%%% XeLaTeX: between Xe an LaTeX
 \lbthlpt@save{XeLaTeX}
 \patchcmd\HoLogo@XeLaTeX
   {\kern-.13em}
@@ -147,22 +175,52 @@
       {\lbthlpt@ifit{\kern-.15em}{\kern-.09em}}
       {\lbthlpt@ifit{\kern-.09em}{\kern-.025em}}%
   }
-  {}{}
-% (La)TeX
+  {\lbthlpt@success{XeLaTeX}{\HoLogo@XeLaTeX}}
+  {\lbthlpt@failure{XeLaTeX}{\HoLogo@XeLaTeX}}
+
+%%% LaTeXTeX
 \lbthlpt@save{LaTeXTeX}
+% between ( and La
 \patchcmd\HoLogo@LaTeXTeX
   {\kern-.15em}
   {\lbthlpt@ifbiolinum{\kern-.09em}{\kern-.06em}}
-  {}{}
+  {\lbthlpt@success{(La)TeX}{\HoLogo@LaTeXTeX}}
+  {\lbthlpt@failure{(La)TeX}{\HoLogo@LaTeXTeX}}
+% between La and )
 \patchcmd\HoLogo@LaTeXTeX
   {\kern-.2em}
-  {\kern-.14em}
-  {}{}
+  {%
+    \lbthlpt@ifbiolinum
+      {\lbthlpt@ifit{\kern-.14em}{\kern-.12em}}
+      {\lbthlpt@ifit{\kern-.14em}{\kern-.12em}}%
+  }
+  {\lbthlpt@success{(La)TeX}{\HoLogo@LaTeXTeX}}
+  {\lbthlpt@failure{(La)TeX}{\HoLogo@LaTeXTeX}}
+% between ) and TeX
 \patchcmd\HoLogo@LaTeXTeX
   {\kern-.15em}
   {\kern-.09em}
-  {}{}
+  {\lbthlpt@success{(La)TeX}{\HoLogo@LaTeXTeX}}
+  {\lbthlpt@failure{(La)TeX}{\HoLogo@LaTeXTeX}}
+
+%%% (La)TeX
+\lbthlpt@save{(La)TeX}
 \cslet{HoLogo@(La)TeX}\HoLogo@LaTeXTeX
+
+% --------------------------------------------------------------------------
+% restore originals
+\def\lbthlpt@restore@originals{%
+  \lbthlpt@restore{La}%
+  \lbthlpt@restore{TeX}%
+  \lbthlpt@restore{LaTeX}%
+  \lbthlpt@restore{Xe}%
+  \lbthlpt@restore{XeTeX}%
+  \lbthlpt@restore{XeLaTeX}%
+  \lbthlpt@restore{LaTeXTeX}%
+  \lbthlpt@restore{(La)TeX}%
+}
+\newrobustcmd\restorelogos{%
+  \lbthlpt@restore@originals}
 
 % --------------------------------------------------------------------------
 % shortcuts (with pdf bookmark support via hyperref)

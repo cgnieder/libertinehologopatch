@@ -11,6 +11,7 @@
     \TeX{}
     \LaTeX{}
     \LaTeXe{}
+    \LaTeXTeX{}
     \pdfLaTeX{}
     \XeTeX{}
     \XeLaTeX{}
@@ -32,13 +33,23 @@
   \endgroup
 }
 
+\usepackage{hyperref}
+
 \begin{document}
 \Large
 
-\section{Linux Libertine}
+\section{Unpatched}
+\subsection{Linux Libertine}
+{\restorelogos\test{}}
+
+\subsection{Linux Biolinum}
+{\restorelogos\test{\sffamily}}
+
+\section{Patched}
+\subsection{Linux Libertine}
 \test{}
 
-\section{Linux Biolinum}
+\subsection{Linux Biolinum}
 \test{\sffamily}
 
 \end{document}
