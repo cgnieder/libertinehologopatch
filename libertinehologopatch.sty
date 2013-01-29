@@ -42,14 +42,61 @@
 
 \def\lbthlpt@family@biolinumOsF{LinuxBiolinumT-OsF}
 \def\lbthlpt@family@biolinumLF{LinuxBiolinumT-LF}
+\def\lbthlpt@family@libertineOsF{LinuxLibertineT-OsF}
+\def\lbthlpt@family@libertineLF{LinuxLibertineT-LF}
+
+% --------------------------------------------------------------------------
+% package options:
+\newbool{lbthlpt@silent}
+\newbool{lbthlpt@verbose}
+\newbool{lbthlpt@errors}
+\newbool{lbthlpt@shortcuts}
+
+% default behaviour:
+\booltrue{lbthlpt@verbose}
+\booltrue{lbthlpt@shortcuts}
+
+\DeclareOption{silent}{%
+  \booltrue{lbthlpt@silent}%
+  \boolfalse{lbthlpt@verbose}%
+  \boolfalse{lbthlpt@errors}%
+}
+\DeclareOption{verbose}{%
+  \boolfalse{lbthlpt@silent}%
+  \booltrue{lbthlpt@verbose}%
+  \boolfalse{lbthlpt@errors}%
+}
+\DeclareOption{errors}{%
+  \boolfalse{lbthlpt@silent}%
+  \boolfalse{lbthlpt@errors}%
+  \booltrue{lbthlpt@errors}%
+}
+\DeclareOption{shortcuts}
+  {\booltrue{lbthlpt@shortcuts}}
+\DeclareOption{noshortcuts}
+  {\boolfalse{lbthlpt@shortcuts}}
+
+\ProcessOptions*\relax
 
 \def\lbthlpt@failure#1#2{%
-  \PackageWarning{libertinehologopatch}
-    {Patching of logo `#1' (\string#2) failed.}
+  \ifbool{lbthlpt@verbose}
+    {%
+      \PackageWarning{libertinehologopatch}
+        {Patching of logo `#1' (\string#2) failed.}%
+    }{}%
+  \ifbool{lbthlpt@errors}
+    {%
+      \PackageError{libertinehologopatch}
+        {Patching of logo `#1' (\string#2) failed.}
+        {Patching of logo `#1' (\string#2) failed.}%
+    }{}%
 }
 \def\lbthlpt@success#1#2{%
-  \PackageInfo{libertinehologopatch}
-    {Patching of logo `#1' (\string#2) successful.}
+  \ifboolexpe{ bool {lbthlpt@verbose} or bool {lbthlpt@errors} }
+    {%
+      \PackageInfo{libertinehologopatch}
+        {Patching of logo `#1' (\string#2) successful.}%
+    }{}
 }
 
 % --------------------------------------------------------------------------
@@ -64,9 +111,17 @@
 
 % test for biolinum:
 \def\lbthlpt@ifbiolinum{%
-  \ifboolexpr{
+  \ifboolexpe{
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumOsF} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumLF}
+  }
+}
+
+% test for libertine:
+\def\lbthlpt@iflibertine{%
+  \ifboolexpe{
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineOsF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineLF}
   }
 }
 
@@ -82,6 +137,13 @@
 }
 \def\lbthlpt@scshape{sc}
 
+% test: biolinum or libertine or none
+\def\lbthlpt@fonttest#1#2#3{%
+  \lbthlpt@ifbiolinum
+    {#1}
+    {\lbthlpt@iflibertine{#2}{#3}}%
+}
+
 % ----------------------------------------------------------------------------
 % save unpatched versions:
 \newcommand*\lbthlpt@save[1]{%
@@ -94,15 +156,19 @@
   \csletcs{HoLogo@#1}{lbthlpt@unpatched@#1}}
 
 % ----------------------------------------------------------------------------
-% the patching:
+% the patching
+% enable consecutive patching by inserting a leading 0 -- this prevents
+% wrong patching if a new value happens to be one of the old ones
+%
 %%% La: between L and A
 \lbthlpt@save{La}
 \patchcmd\HoLogo@La
   {\kern-.36em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.23em}{\kern-.28em}}
-      {\lbthlpt@ifit{\kern-.24em}{\kern-.29em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.23em}{\kern-0.28em}}
+      {\lbthlpt@ifit{\kern-0.24em}{\kern-0.29em}}
+      {\kern-0.36em}%
   }
   {\lbthlpt@success{La}{\HoLogo@La}}
   {\lbthlpt@failure{La}{\HoLogo@La}}
@@ -113,9 +179,10 @@
 \patchcmd\HoLogo@TeX
   {\kern-.1667em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.2000em}{\kern-.1667em}}
-      {\lbthlpt@ifit{\kern-.1667em}{\kern-.1667em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.2000em}{\kern-0.1667em}}
+      {\lbthlpt@ifit{\kern-0.1667em}{\kern-0.1667em}}
+      {\kern-0.1667em}%
   }
   {\lbthlpt@success{TeX}{\HoLogo@TeX}}
   {\lbthlpt@failure{TeX}{\HoLogo@TeX}}
@@ -123,9 +190,10 @@
 \patchcmd\HoLogo@TeX
   {\kern-.125em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.065em}{\kern-.105em}}
-      {\lbthlpt@ifit{\kern-.105em}{\kern-.125em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.065em}{\kern-0.105em}}
+      {\lbthlpt@ifit{\kern-0.105em}{\kern-0.125em}}
+      {\kern-0.125em}%
   }
   {\lbthlpt@success{TeX}{\HoLogo@TeX}}
   {\lbthlpt@failure{TeX}{\HoLogo@TeX}}
@@ -135,9 +203,10 @@
 \patchcmd\HoLogo@LaTeX
   {\kern-.15em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.13em}{\kern-0.085em}}
-      {\lbthlpt@ifit{\kern-.13em}{\kern-.11em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.13em}{\kern-0.085em}}
+      {\lbthlpt@ifit{\kern-0.13em}{\kern-0.11em}}
+      {\kern-0.15em}%
   }
   {\lbthlpt@success{LaTeX}{\HoLogo@LaTeX}}
   {\lbthlpt@failure{LaTeX}{\HoLogo@LaTeX}}
@@ -147,9 +216,10 @@
 \patchcmd\HoLogo@Xe
   {\kern-.1em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.05em}{\kern-.1em}}
-      {\lbthlpt@ifit{\kern-.05em}{\kern-.1em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.05em}{\kern-0.1em}}
+      {\lbthlpt@ifit{\kern-0.05em}{\kern-0.1em}}
+      {\kern-0.1em}%
   }
   {\lbthlpt@success{Xe}{\HoLogo@Xe}}
   {\lbthlpt@failure{Xe}{\HoLogo@Xe}}
@@ -159,9 +229,10 @@
 \patchcmd\HoLogo@XeTeX
   {\kern-.15em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.24em}{\kern-.15em}}
-      {\lbthlpt@ifit{\kern-.235em}{\kern-.15em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.24em}{\kern-0.15em}}
+      {\lbthlpt@ifit{\kern-0.235em}{\kern-0.15em}}
+      {\kern-0.15em}%
   }
   {\lbthlpt@success{XeTeX}{\HoLogo@XeTeX}}
   {\lbthlpt@failure{XeTeX}{\HoLogo@XeTeX}}
@@ -171,9 +242,10 @@
 \patchcmd\HoLogo@XeLaTeX
   {\kern-.13em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.15em}{\kern-.09em}}
-      {\lbthlpt@ifit{\kern-.09em}{\kern-.025em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.15em}{\kern-0.09em}}
+      {\lbthlpt@ifit{\kern-0.09em}{\kern-0.025em}}
+      {\kern-0.13em}%
   }
   {\lbthlpt@success{XeLaTeX}{\HoLogo@XeLaTeX}}
   {\lbthlpt@failure{XeLaTeX}{\HoLogo@XeLaTeX}}
@@ -183,23 +255,34 @@
 % between ( and La
 \patchcmd\HoLogo@LaTeXTeX
   {\kern-.15em}
-  {\lbthlpt@ifbiolinum{\kern-.09em}{\kern-.06em}}
+  {%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.09em}{\kern-0.09em}}
+      {\lbthlpt@ifit{\kern-0.06em}{\kern-0.06em}}
+      {\kern-0.15em}%
+  }%
   {\lbthlpt@success{(La)TeX}{\HoLogo@LaTeXTeX}}
   {\lbthlpt@failure{(La)TeX}{\HoLogo@LaTeXTeX}}
 % between La and )
 \patchcmd\HoLogo@LaTeXTeX
   {\kern-.2em}
   {%
-    \lbthlpt@ifbiolinum
-      {\lbthlpt@ifit{\kern-.14em}{\kern-.12em}}
-      {\lbthlpt@ifit{\kern-.14em}{\kern-.12em}}%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.16em}{\kern-0.13em}}
+      {\lbthlpt@ifit{\kern-0.14em}{\kern-0.12em}}
+      {\kern-0.2em}%
   }
   {\lbthlpt@success{(La)TeX}{\HoLogo@LaTeXTeX}}
   {\lbthlpt@failure{(La)TeX}{\HoLogo@LaTeXTeX}}
 % between ) and TeX
 \patchcmd\HoLogo@LaTeXTeX
   {\kern-.15em}
-  {\kern-.09em}
+  {%
+    \lbthlpt@fonttest
+      {\lbthlpt@ifit{\kern-0.11em}{\kern-0.11em}}
+      {\lbthlpt@ifit{\kern-0.09em}{\kern-0.07em}}
+      {\kern-0.15em}%
+  }
   {\lbthlpt@success{(La)TeX}{\HoLogo@LaTeXTeX}}
   {\lbthlpt@failure{(La)TeX}{\HoLogo@LaTeXTeX}}
 
@@ -224,48 +307,53 @@
 
 % --------------------------------------------------------------------------
 % shortcuts (with pdf bookmark support via hyperref)
-\AtBeginDocument{
-  \renewrobustcmd\TeX{\hologo{TeX}}
-  \renewrobustcmd\LaTeX{\hologo{LaTeX}}
-  \renewrobustcmd\LaTeXe{\hologo{LaTeX2e}}
-  \ifdef\LaTeXTeX
-    {\renewrobustcmd\LaTeXTeX{\hologo{LaTeXTeX}}}
-    {\newrobustcmd\LaTeXTeX{\hologo{LaTeXTeX}}}
-  \ifdef\pdfTeX
-    {\renewrobustcmd\pdfTeX{\hologo{pdfTeX}}}
-    {\newrobustcmd\pdfTeX{\hologo{pdfTeX}}}
-  \ifdef\pdfLaTeX
-    {\renewrobustcmd\pdfLaTeX{\hologo{pdfLaTeX}}}
-    {\newrobustcmd\pdfLaTeX{\hologo{pdfLaTeX}}}
-  \ifdef\XeTeX
-    {\renewrobustcmd\XeTeX{\hologo{XeTeX}}}
-    {\newrobustcmd\XeTeX{\hologo{XeTeX}}}
-  \ifdef\XeLaTeX
-    {\renewrobustcmd\XeLaTeX{\hologo{XeLaTeX}}}
-    {\newrobustcmd\XeLaTeX{\hologo{XeLaTeX}}}
-  \ifdef\LuaTeX
-    {\renewrobustcmd\LuaTeX{\hologo{LuaTeX}}}
-    {\newrobustcmd\LuaTeX{\hologo{LuaTeX}}}
-  \ifdef\LuaLaTeX
-    {\renewrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
-    {\newrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
-  \@ifpackageloaded{hyperref}
-    {
-      \pdfstringdefDisableCommands
+\ifbool{lbthlpt@shortcuts}
+  {
+    \ifboolexpe{ bool {lbthlpt@verbose} or bool {lbthlpt@errors} }
+      {\PackageInfo{libertinehologopatch}{Defining shortcuts}}{}
+    \AtBeginDocument{
+      \renewrobustcmd\TeX{\hologo{TeX}}
+      \renewrobustcmd\LaTeX{\hologo{LaTeX}}
+      \renewrobustcmd\LaTeXe{\hologo{LaTeX2e}}
+      \ifdef\LaTeXTeX
+        {\renewrobustcmd\LaTeXTeX{\hologo{LaTeXTeX}}}
+        {\newrobustcmd\LaTeXTeX{\hologo{LaTeXTeX}}}
+      \ifdef\pdfTeX
+        {\renewrobustcmd\pdfTeX{\hologo{pdfTeX}}}
+        {\newrobustcmd\pdfTeX{\hologo{pdfTeX}}}
+      \ifdef\pdfLaTeX
+        {\renewrobustcmd\pdfLaTeX{\hologo{pdfLaTeX}}}
+        {\newrobustcmd\pdfLaTeX{\hologo{pdfLaTeX}}}
+      \ifdef\XeTeX
+        {\renewrobustcmd\XeTeX{\hologo{XeTeX}}}
+        {\newrobustcmd\XeTeX{\hologo{XeTeX}}}
+      \ifdef\XeLaTeX
+        {\renewrobustcmd\XeLaTeX{\hologo{XeLaTeX}}}
+        {\newrobustcmd\XeLaTeX{\hologo{XeLaTeX}}}
+      \ifdef\LuaTeX
+        {\renewrobustcmd\LuaTeX{\hologo{LuaTeX}}}
+        {\newrobustcmd\LuaTeX{\hologo{LuaTeX}}}
+      \ifdef\LuaLaTeX
+        {\renewrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
+        {\newrobustcmd\LuaLaTeX{\hologo{LuaLaTeX}}}
+      \@ifpackageloaded{hyperref}
         {
-          \def\TeX{TeX}
-          \def\LaTeX{LaTeX}
-          \def\LaTeXe{LaTeX 2e}
-          \def\LaTeXTeX{(La)TeX}
-          \def\pdfTeX{pdfTeX}
-          \def\pdfLaTeX{pdfLaTeX}
-          \def\XeTeX{XeTeX}
-          \def\XeLaTeX{XeLaTeX}
-          \def\LuaTeX{LuaTeX}
-          \def\LuaLaTeX{LuaLaTeX}
-        }
-    }{}
-}
+          \pdfstringdefDisableCommands
+            {
+              \def\TeX{TeX}
+              \def\LaTeX{LaTeX}
+              \def\LaTeXe{LaTeX 2e}
+              \def\LaTeXTeX{(La)TeX}
+              \def\pdfTeX{pdfTeX}
+              \def\pdfLaTeX{pdfLaTeX}
+              \def\XeTeX{XeTeX}
+              \def\XeLaTeX{XeLaTeX}
+              \def\LuaTeX{LuaTeX}
+              \def\LuaLaTeX{LuaLaTeX}
+            }
+        }{}
+    }
+  }{}
 
 \endinput
 % TODO:
