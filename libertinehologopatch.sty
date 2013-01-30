@@ -30,7 +30,7 @@
 % feel free to contact me.
 % --------------------------------------------------------------------------
 \def\lbthlpt@date{2013/01/29}
-\def\lbthlpt@version{v0.2}
+\def\lbthlpt@version{v0.2a}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine' (CN)}
 
@@ -38,12 +38,27 @@
   [\lbthlpt@date\space\lbthlpt@version\space\lbthlpt@description]
 \RequirePackage{etoolbox}
 \RequirePackage{hologo}[2012/04/26]
-\RequirePackage{libertine}[2012/12/27]
+\RequirePackage{libertine}[2013/01/25]
 
+% pdfLaTeX:
+\def\lbthlpt@family@biolinum{LinuxBiolinumT}
 \def\lbthlpt@family@biolinumOsF{LinuxBiolinumT-OsF}
 \def\lbthlpt@family@biolinumLF{LinuxBiolinumT-LF}
+\def\lbthlpt@family@biolinumTOsF{LinuxBiolinumT-TOsF}
+\def\lbthlpt@family@biolinumTLF{LinuxBiolinumT-TLF}
+
+\def\lbthlpt@family@libertine{LinuxLibertineT}
 \def\lbthlpt@family@libertineOsF{LinuxLibertineT-OsF}
 \def\lbthlpt@family@libertineLF{LinuxLibertineT-LF}
+\def\lbthlpt@family@libertineTOsF{LinuxLibertineT-TOsF}
+\def\lbthlpt@family@libertineTLF{LinuxLibertineT-TLF}
+
+\def\lbthlpt@family@libertineDisplayTLF{LinuxLibertineDisplayT-TLF}
+\def\lbthlpt@family@libertineDisplayTOsF{LinuxLibertineDisplayT-TOsF}
+
+% XeLaTeX/LuaLaTeX:
+\def\lbthlpt@libertine@base{LinLibertine}%\libertine@base
+\def\lbthlpt@biolinum@base{LinBiolinum}%\biolinum@base
 
 % --------------------------------------------------------------------------
 % package options:
@@ -112,19 +127,30 @@
 % test for biolinum:
 \def\lbthlpt@ifbiolinum{%
   \ifboolexpe{
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinum} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumOsF} or
-    test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumLF}
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumLF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumTOsF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumTLF} or
+    test {\lbthlpt@ifx\lbthlpt@biolinum@base\biolinum@base}
   }
 }
 
 % test for libertine:
 \def\lbthlpt@iflibertine{%
   \ifboolexpe{
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertine} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineOsF} or
-    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineLF}
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineLF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineTOsF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineTLF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineDisplayTOsF} or
+    test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineDisplayTLF} or
+    test {\lbthlpt@ifx\lbthlpt@libertine@base\libertine@base}
   }
 }
 
+% TODO: adapt for XeLaTeX and LuaLaTeX
 % test for italics:
 \def\lbthlpt@ifit{%
   \lbthlpt@ifx\f@shape\lbthlpt@itshape
