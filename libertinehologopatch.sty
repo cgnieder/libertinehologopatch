@@ -29,7 +29,7 @@
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/01/29}
+\def\lbthlpt@date{2013/01/30}
 \def\lbthlpt@version{v0.2a}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine' (CN)}
@@ -382,5 +382,14 @@
   }{}
 
 \endinput
+% VERSION HISTORY
+2013/01/?? v0.1  - first draft
+2013/01/28 v0.2  - included package options, provided the necessary and
+                   previously missing default value if neither Libertine nor
+                   Biolinum are used
+2013/01/30 v0.2a - adapted to changes in `libertine' and added missing tests
+
 % TODO:
-- LuaTeX : Libertine sc : zu große Lücke zwischen Lua und TeX
+- \LuaTeX : Libertine sc : zu große Lücke zwischen Lua und TeX
+- test for it : adapt for use with XeLaTeX or LuaLaTeX
+  => figure out how `fontspec' sets the font shape
