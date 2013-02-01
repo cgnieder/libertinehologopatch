@@ -24,13 +24,14 @@
 % --------------------------------------------------------------------------
 % The libertinehologopatch package consists of the files
 %  - libertinehologopatch.sty
+%  - libertinehologopatch_en.tex, libertinehologopatch_en.pdf
 %  - README
 % --------------------------------------------------------------------------
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/01/30}
-\def\lbthlpt@version{v0.2a}
+\def\lbthlpt@date{2013/02/01}
+\def\lbthlpt@version{v0.2b}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine' (CN)}
 
@@ -193,7 +194,7 @@
   {%
     \lbthlpt@fonttest
       {\lbthlpt@ifit{\kern-0.23em}{\kern-0.28em}}
-      {\lbthlpt@ifit{\kern-0.24em}{\kern-0.29em}}
+      {\lbthlpt@ifit{\kern-0.26em}{\kern-0.31em}}
       {\kern-0.36em}%
   }
   {\lbthlpt@success{La}{\HoLogo@La}}
@@ -218,7 +219,7 @@
   {%
     \lbthlpt@fonttest
       {\lbthlpt@ifit{\kern-0.065em}{\kern-0.105em}}
-      {\lbthlpt@ifit{\kern-0.105em}{\kern-0.125em}}
+      {\lbthlpt@ifit{\kern-0.085em}{\kern-0.120em}}
       {\kern-0.125em}%
   }
   {\lbthlpt@success{TeX}{\HoLogo@TeX}}
@@ -231,7 +232,7 @@
   {%
     \lbthlpt@fonttest
       {\lbthlpt@ifit{\kern-0.13em}{\kern-0.085em}}
-      {\lbthlpt@ifit{\kern-0.13em}{\kern-0.11em}}
+      {\lbthlpt@ifit{\kern-0.13em}{\kern-0.10em}}
       {\kern-0.15em}%
   }
   {\lbthlpt@success{LaTeX}{\HoLogo@LaTeX}}
@@ -388,6 +389,8 @@
                    previously missing default value if neither Libertine nor
                    Biolinum are used
 2013/01/30 v0.2a - adapted to changes in `libertine' and added missing tests
+2013/02/01 v0.2b - added documentation
+
 
 % TODO:
 - \LuaTeX : Libertine sc : zu große Lücke zwischen Lua und TeX
