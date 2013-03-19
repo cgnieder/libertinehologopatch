@@ -54,17 +54,18 @@
  heading_prefix "{\\bfseries "
  heading_suffix "\\hfil}\\nopagebreak\n"
  headings_flag  1
- delim_0 "\\dotfill "
- delim_1 "\\dotfill "
- delim_2 "\\dotfill "
- delim_r "\\textendash"
+ delim_0 "\\dotfill\\hyperpage{"
+ delim_1 "\\dotfill\\hyperpage{"
+ delim_2 "\\dotfill\\hyperpage{"
+ delim_r "}\\textendash\\hyperpage{"
+ delim_t "}"
  suffix_2p "\\nohyperpage{\\,f.}"
  suffix_3p "\\nohyperpage{\\,ff.}"
 \end{filecontents}
 
 \usepackage{imakeidx}
-% \indexsetup{noclearpage}
-\makeindex[columns=2,intoc,options={-sl \jobname.ist}]
+\indexsetup{noclearpage,othercode=\footnotesize}
+\makeindex[columns=3,intoc,options={-sl \jobname.ist}]
 
 \begin{document}
 
@@ -116,7 +117,7 @@ fonts to say the least:
  \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
 \end{beispiel}
 
-What \lbthlpt does is check if one of these fonts is used and changes the
+What \lbthlpt does is it checks if one of these fonts is used and changes the
 kerning then:
 
 \begin{beispiel}
@@ -136,10 +137,16 @@ All you have to do is load the package in the usual \LaTeXe{} way:
 and all the logos will be patched appropriately. Please note that \lbthlpt is
 not (yet?) fully working with \XeLaTeX{} and \LuaLaTeX.
 
-\lbthlpt defines one additional user macro:
+\lbthlpt defines two additional user macros:
 \begin{beschreibung}
  \Befehl{restorelogos}\newline
    Restores the original definitions of the logo commands, the scope is local.
+ \Befehl{originallogo}{<logo>}\newline
+   This command takes the same argument as \cmd{hologo} and outputs the unpatched
+   version of the respective logo. It uses \cmd{restorelogos} internally.
+ \Befehl{Originallogo}{<logo>}\newline
+   This command takes the same argument as \cmd{Hologo} and outputs the unpatched
+   version of the respective uppercased logo. It uses \cmd{restorelogos} internally.
 \end{beschreibung}
 
 \secidx*{Usage}

@@ -30,8 +30,8 @@
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/02/01}
-\def\lbthlpt@version{v0.2b}
+\def\lbthlpt@date{2013/03/19}
+\def\lbthlpt@version{v0.2c}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine' (CN)}
 
@@ -173,14 +173,31 @@
 
 % ----------------------------------------------------------------------------
 % save unpatched versions:
+\def\lbthlpt@saved@logos{}
 \newcommand*\lbthlpt@save[1]{%
-  \csletcs{lbthlpt@unpatched@#1}{HoLogo@#1}}
-\newcommand*\lbthlpt@get@unpatched[1]{%
-  \csuse{lbthlpt@unpatched@#1}}
+  \csletcs{lbthlpt@unpatched@#1}{HoLogo@#1}%
+  \listadd\lbthlpt@saved@logos{#1}}
 
 % restore unpatched versions:
 \newcommand*\lbthlpt@restore[1]{%
   \csletcs{HoLogo@#1}{lbthlpt@unpatched@#1}}
+
+% restore originals
+\def\lbthlpt@restore@originals{%
+  \forlistloop\lbthlpt@restore\lbthlpt@saved@logos}
+\newrobustcmd\restorelogos{%
+  \lbthlpt@restore@originals}
+
+% get unpatched logo:
+\newcommand*\lbthlpt@get@unpatched[2]{%
+  \begingroup
+    \lbthlpt@restore@originals
+    #1{#2}%
+  \endgroup}
+\newrobustcmd*\originallogo[1]{%
+  \lbthlpt@get@unpatched\hologo{#1}}
+\newrobustcmd*\Originallogo[1]{%
+  \lbthlpt@get@unpatched\Hologo{#1}}
 
 % ----------------------------------------------------------------------------
 % the patching
@@ -318,21 +335,6 @@
 \cslet{HoLogo@(La)TeX}\HoLogo@LaTeXTeX
 
 % --------------------------------------------------------------------------
-% restore originals
-\def\lbthlpt@restore@originals{%
-  \lbthlpt@restore{La}%
-  \lbthlpt@restore{TeX}%
-  \lbthlpt@restore{LaTeX}%
-  \lbthlpt@restore{Xe}%
-  \lbthlpt@restore{XeTeX}%
-  \lbthlpt@restore{XeLaTeX}%
-  \lbthlpt@restore{LaTeXTeX}%
-  \lbthlpt@restore{(La)TeX}%
-}
-\newrobustcmd\restorelogos{%
-  \lbthlpt@restore@originals}
-
-% --------------------------------------------------------------------------
 % shortcuts (with pdf bookmark support via hyperref)
 \ifbool{lbthlpt@shortcuts}
   {
@@ -390,6 +392,8 @@
                    Biolinum are used
 2013/01/30 v0.2a - adapted to changes in `libertine' and added missing tests
 2013/02/01 v0.2b - added documentation
+2013/03/19 v0.2c - internal changes to the saving and restoring
+                 - new: \originallogo and \Originallogo
 
 
 % TODO:
