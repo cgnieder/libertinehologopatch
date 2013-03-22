@@ -1,12 +1,10 @@
-% arara: pdflatex
+% arara: xelatex
 \documentclass{article}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
 \usepackage[a4paper,margin=1cm]{geometry}
 \setlength\parindent{0pt}
-\usepackage[oldstyle]{libertine}
 \usepackage{libertinehologopatch}
-\usepackage[scaled=0.83]{beramono}
+
 
 \newcommand\testlogos[1]{%
   \begingroup
@@ -29,6 +27,7 @@
            & \testlogos{} \\
     it:    & \testlogos{\itshape}\\
     sc:    & \testlogos{\scshape}\\
+    it+sc: & \testlogos{\sishape}\\
     bf:    & \testlogos{\bfseries}\\
     bf+it: & \testlogos{\bfseries\itshape}\\
     bf+sc: & \testlogos{\bfseries\scshape}

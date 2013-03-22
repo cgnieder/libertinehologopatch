@@ -1,3 +1,5 @@
+% arara: pdflatex
+% arara: pdflatex
 % --------------------------------------------------------------------------
 % the LIBERTINEHOLOGOPATCH package
 % 
@@ -134,10 +136,9 @@ All you have to do is load the package in the usual \LaTeXe{} way:
 \begin{beispiel}[code only]
  \usepackage{libertinehologopatch}
 \end{beispiel}
-and all the logos will be patched appropriately. Please note that \lbthlpt is
-not (yet?) fully working with \XeLaTeX{} and \LuaLaTeX.
+and all the logos will be patched appropriately.
 
-\lbthlpt defines two additional user macros:
+\lbthlpt defines additional user macros:
 \begin{beschreibung}
  \Befehl{restorelogos}\newline
    Restores the original definitions of the logo commands, the scope is local.
@@ -148,9 +149,7 @@ not (yet?) fully working with \XeLaTeX{} and \LuaLaTeX.
    This command takes the same argument as \cmd{Hologo} and outputs the unpatched
    version of the respective uppercased logo. It uses \cmd{restorelogos} internally.
 \end{beschreibung}
-
 \secidx*{Usage}
-
 
 \section{Implementation}
 \implementation

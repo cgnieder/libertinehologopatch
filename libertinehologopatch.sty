@@ -30,14 +30,15 @@
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/03/19}
-\def\lbthlpt@version{v0.2c}
+\def\lbthlpt@date{2013/03/22}
+\def\lbthlpt@version{v0.3}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine' (CN)}
 
 \ProvidesPackage{libertinehologopatch}%
   [\lbthlpt@date\space\lbthlpt@version\space\lbthlpt@description]
 \RequirePackage{etoolbox}
+\RequirePackage{ifxetex}
 \RequirePackage{hologo}[2012/04/26]
 \RequirePackage{libertine}[2013/01/25]
 
@@ -58,8 +59,8 @@
 \def\lbthlpt@family@libertineDisplayTOsF{LinuxLibertineDisplayT-TOsF}
 
 % XeLaTeX/LuaLaTeX:
-\def\lbthlpt@libertine@base{LinLibertine}%\libertine@base
-\def\lbthlpt@biolinum@base{LinBiolinum}%\biolinum@base
+\def\lbthlpt@libertine@base{LinLibertine(0)}
+\def\lbthlpt@biolinum@base{LinBiolinum(0)}
 
 % --------------------------------------------------------------------------
 % package options:
@@ -116,6 +117,7 @@
 }
 
 % --------------------------------------------------------------------------
+% some conditionals:
 % wrap \ifx:
 \def\lbthlpt@ifx#1#2{%
   \ifx#1#2%
@@ -133,7 +135,7 @@
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumLF} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumTOsF} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@biolinumTLF} or
-    test {\lbthlpt@ifx\lbthlpt@biolinum@base\biolinum@base}
+    test {\lbthlpt@ifx\lbthlpt@biolinum@base\f@family}
   }
 }
 
@@ -147,22 +149,47 @@
     test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineTLF} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineDisplayTOsF} or
     test {\lbthlpt@ifx\f@family\lbthlpt@family@libertineDisplayTLF} or
-    test {\lbthlpt@ifx\lbthlpt@libertine@base\libertine@base}
+    test {\lbthlpt@ifx\lbthlpt@libertine@base\f@family}
   }
 }
 
-% TODO: adapt for XeLaTeX and LuaLaTeX
+% test for xetex and luatex:
+\def\lbthlpt@ifxeorlua{%
+  \ifboolexpe{
+    bool {xetex} or
+    bool {luatex}
+  }
+}
+
+% ----------------------------------------------------------------------------
+% tests for different font properties:
+\def\lbthlpt@property#1{\csdef{lbthlpt@#1}{#1}}
+\lbthlpt@property{it}
+\lbthlpt@property{si}% with fontspec: sc+it
+\lbthlpt@property{sc}
+\lbthlpt@property{bx}% bold extended
+\lbthlpt@property{sb}% semi-bold
+
 % test for italics:
 \def\lbthlpt@ifit{%
-  \lbthlpt@ifx\f@shape\lbthlpt@itshape
+  \ifboolexpe{
+    test {\lbthlpt@ifx\f@shape\lbthlpt@it} or
+    test {\lbthlpt@ifx\f@shape\lbthlpt@si}
+  }
 }
-\def\lbthlpt@itshape{it}
 
 % test for small caps:
 \def\lbthlpt@ifsc{%
-  \lbthlpt@ifx\f@shape\lbthlpt@scshape
+  \lbthlpt@ifx\f@shape\lbthlpt@sc
 }
-\def\lbthlpt@scshape{sc}
+
+% test for boldface:
+\def\lbthlpt@ifbf{%
+  \ifboolexpe{
+    test {\lbthlpt@ifx\f@series\lbthlpt@bx} or
+    test {\lbthlpt@ifx\f@series\lbthlpt@sb}
+  }
+}
 
 % test: biolinum or libertine or none
 \def\lbthlpt@fonttest#1#2#3{%
@@ -261,8 +288,28 @@
   {\kern-.1em}
   {%
     \lbthlpt@fonttest
-      {\lbthlpt@ifit{\kern-0.05em}{\kern-0.1em}}
-      {\lbthlpt@ifit{\kern-0.05em}{\kern-0.1em}}
+      {% biolinum
+        \lbthlpt@ifit
+          {%
+            \lbthlpt@ifxeorlua
+              {\lbthlpt@ifbf{\kern-0.05em}{\kern-0.18em}}
+              {\kern-0.05em}%
+          }
+          {%
+            \lbthlpt@ifxeorlua
+              {\lbthlpt@ifbf{\kern-0.1em}{\kern-0.12em}}
+              {\kern-0.1em}%
+          }%
+      }
+      {% libertine
+        \lbthlpt@ifit
+          {%
+            \lbthlpt@ifxeorlua
+              {\lbthlpt@ifbf{\kern-0.05em}{\kern-0.18em}}
+              {\kern-0.05em}%
+          }
+          {\kern-0.1em}%
+      }
       {\kern-0.1em}%
   }
   {\lbthlpt@success{Xe}{\HoLogo@Xe}}
@@ -274,8 +321,28 @@
   {\kern-.15em}
   {%
     \lbthlpt@fonttest
-      {\lbthlpt@ifit{\kern-0.24em}{\kern-0.15em}}
-      {\lbthlpt@ifit{\kern-0.235em}{\kern-0.15em}}
+      {% biolinum
+        \lbthlpt@ifit
+          {%
+            \lbthlpt@ifxeorlua
+              {\lbthlpt@ifbf{\kern-0.15em}{\kern-0.10em}}
+              {\kern-0.24em}%
+          }
+          {\kern-0.15em}%
+      }
+      {% libertine
+        \lbthlpt@ifit
+          {%
+            \lbthlpt@ifxeorlua
+              {\lbthlpt@ifbf{\kern-0.235em}{\kern-0.1em}}
+              {\kern-0.235em}%
+          }
+          {%
+            \lbthlpt@ifxeorlua
+              {\kern-0.18em}
+              {\kern-0.15em}%
+          }%
+      }
       {\kern-0.15em}%
   }
   {\lbthlpt@success{XeTeX}{\HoLogo@XeTeX}}
@@ -287,8 +354,24 @@
   {\kern-.13em}
   {%
     \lbthlpt@fonttest
-      {\lbthlpt@ifit{\kern-0.15em}{\kern-0.09em}}
-      {\lbthlpt@ifit{\kern-0.09em}{\kern-0.025em}}
+      {% biolinum
+        \lbthlpt@ifit
+          {%
+            \lbthlpt@ifxeorlua
+              {\lbthlpt@ifbf{}{\kern-0.025em}}
+              {\kern-0.15em}%
+          }
+          {\kern-0.09em}%
+      }
+      {% libertine
+        \lbthlpt@ifit
+          {%
+            \lbthlpt@ifxeorlua
+              {\lbthlpt@ifbf{\kern-0.09em}{\kern0.05em}}
+              {\kern-0.09em}%
+          }
+          {\kern-0.025em}%
+      }
       {\kern-0.13em}%
   }
   {\lbthlpt@success{XeLaTeX}{\HoLogo@XeLaTeX}}
@@ -394,9 +477,8 @@
 2013/02/01 v0.2b - added documentation
 2013/03/19 v0.2c - internal changes to the saving and restoring
                  - new: \originallogo and \Originallogo
+2013/03/22 v0.3  - added support for XeLaTeX and LuaLaTeX (with `fontspec'!)
 
 
 % TODO:
 - \LuaTeX : Libertine sc : zu große Lücke zwischen Lua und TeX
-- test for it : adapt for use with XeLaTeX or LuaLaTeX
-  => figure out how `fontspec' sets the font shape
