@@ -30,8 +30,8 @@
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\def\lbthlpt@date{2013/05/30}
-\def\lbthlpt@version{v0.3a}
+\def\lbthlpt@date{2013/06/29}
+\def\lbthlpt@version{v0.3b}
 \def\lbthlpt@description{%
   patch kerning of logos provided by `hologo' for use with `libertine' (CN)}
 
@@ -451,17 +451,17 @@
       \@ifpackageloaded{hyperref}
         {
           \pdfstringdefDisableCommands
-            {
-              \def\TeX{TeX}
-              \def\LaTeX{LaTeX}
-              \def\LaTeXe{LaTeX 2e}
-              \def\LaTeXTeX{(La)TeX}
-              \def\pdfTeX{pdfTeX}
-              \def\pdfLaTeX{pdfLaTeX}
-              \def\XeTeX{XeTeX}
-              \def\XeLaTeX{XeLaTeX}
-              \def\LuaTeX{LuaTeX}
-              \def\LuaLaTeX{LuaLaTeX}
+            {%
+              \def\TeX{TeX}%
+              \def\LaTeX{LaTeX}%
+              \def\LaTeXe{LaTeX 2e}%
+              \def\LaTeXTeX{(La)TeX}%
+              \def\pdfTeX{pdfTeX}%
+              \def\pdfLaTeX{pdfLaTeX}%
+              \def\XeTeX{XeTeX}%
+              \def\XeLaTeX{XeLaTeX}%
+              \def\LuaTeX{LuaTeX}%
+              \def\LuaLaTeX{LuaLaTeX}%
             }
         }{}
     }
@@ -478,7 +478,8 @@
 2013/03/19 v0.2c - internal changes to the saving and restoring
                  - new: \originallogo and \Originallogo
 2013/03/22 v0.3  - added support for XeLaTeX and LuaLaTeX (with `fontspec'!)
-
+2013/05/30 v0.3a - added explicit call of `ifluatex'
+2013/06/29 v0.3b - removed spurious spaces in \pdfstringdefDisableCommands
 
 % TODO:
 - \LuaTeX : Libertine sc : zu große Lücke zwischen Lua und TeX
