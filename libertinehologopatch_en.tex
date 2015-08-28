@@ -10,7 +10,7 @@
 % Web:    https://bitbucket.org/cgnieder/libertinehologopatch/
 % E-Mail: contact@mychemistry.eu
 % --------------------------------------------------------------------------
-% Copyright 2013 Clemens Niederberger
+% Copyright 2013-2015 Clemens Niederberger
 % 
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -28,136 +28,129 @@
 %  - libertinehologopatch.sty
 %  - libertinehologopatch_en.tex, libertinehologopatch_en.pdf
 %  - README
+%  - testfiles: testfile.tex, testfile-xe.tex, testfile-lua.tex
 % --------------------------------------------------------------------------
 % If you have any ideas, questions, suggestions or bugs to report, please
 % feel free to contact me.
 % --------------------------------------------------------------------------
-\PassOptionsToPackage{supstfm=libertinesups}{superiors}
-\documentclass{cnpkgdoc}
-\docsetup{
-  pkg      = libertinehologopatch ,
-  cmd      = \lbthlpt ,
-  title    = {Libertine Hologo \\ Patch} ,
-  subtitle = Patching the logos provided by the \paketfont{hologo}
-    package when used together with the \paketfont{libertine} package
-    and \pdfLaTeX. ,
-  label    =
+% \PassOptionsToPackage{supstfm=libertinesups}{superiors}
+\documentclass[load-preamble+]{cnltx-doc}
+\usepackage{libertinehologopatch}
+\newpackagename\libertinehologopatch{libertinehologopatch}
+\setcnltx{
+  title    = {libertine\-hologo\-patch},
+  package  = {libertinehologopatch},
+  info     = patch kerning of logos provided by \pkg*{hologo} for use with
+    \pkg*{libertine} ,
+  url      = https://bitbucket.org/cgnieder/libertinehologopatch/ ,
+  authors  = Clemens Niederberger ,
+  email    = contact@mychemistry.eu ,
+  subtitle = \huge from {\restorelogos\LaTeXTeX} to \LaTeXTeX ,
+  abstract = {%
+    Patching the logos provided by the \pkg*{hologo} package when used
+    together with the \pkg*{libertine} package and \pdfLaTeX, \XeLaTeX\ or
+    \LuaLaTeX.
+  } ,
+  add-cmds = {
+    LaTeX, LaTeXe, LaTeXTeX,
+    LuaLaTeX, LuaTeX,
+    pdfLaTeX, pdfTeX,
+    restorelogos,
+    TeX,
+    XeLaTeX, XeTeX
+  } ,
+  % add-silent-cmds = {
+  % 
+  % } ,
+  index-setup = { othercode=\footnotesize, level=\section , noclearpage } ,
+  makeindex-setup = {  columns=3, columnsep=1em }
 }
-
-\TitlePicture{%
-  \centering \Huge From {\restorelogos\LaTeXTeX} to \LaTeXTeX}
-
-\addcmds{LaTeXTeX,restorelogos,XeLaTeX}
-
-\renewcommand*\othersectionlevelsformat[3]{%
-  \textcolor{main}{#3\autodot}\enskip}
-\renewcommand*\partformat{%
-  \textcolor{main}{\partname~\thepart\autodot}}
-\usepackage{fnpct}
-
-\usepackage{filecontents}
-\begin{filecontents}{\jobname.ist}
- heading_prefix "{\\bfseries "
- heading_suffix "\\hfil}\\nopagebreak\n"
- headings_flag  1
- delim_0 "\\dotfill\\hyperpage{"
- delim_1 "\\dotfill\\hyperpage{"
- delim_2 "\\dotfill\\hyperpage{"
- delim_r "}\\textendash\\hyperpage{"
- delim_t "}"
- suffix_2p "\\nohyperpage{\\,f.}"
- suffix_3p "\\nohyperpage{\\,ff.}"
-\end{filecontents}
-
-\usepackage{imakeidx}
-\indexsetup{noclearpage,othercode=\footnotesize}
-\makeindex[columns=3,intoc,options={-sl \jobname.ist}]
 
 \begin{document}
 
-\section{License and Requirements}\secidx{License}
-\lbthlpt is placed under the terms of the \LaTeX{} Project Public License,
-version 1.3 or later (\url{http://www.latex-project.org/lppl.txt}).  It has
-the status ``maintained.''
+\section{License and Requirements}
+\license
 
-\lbthlpt loads and needs the packages \paket{etoolbox}, \paket{hologo},
-\paket{ifxetex}, \paket{ifluatex} and \paket{libertine}.
-\secidx*{License}
+\libertinehologopatch\ loads and needs the packages
+\pkg{etoolbox}~\cite{pkg:etoolbox}, \pkg{hologo}~\cite{pkg:hologo},
+\pkg{ifxetex}~\cite{pkg:ifxetex}, \pkg{ifluatex}~\cite{pkg:ifluatex} and
+\pkg{libertine}~\cite{pkg:libertine}.
 
-\section{Options}\secidx{Options}
+\section{Options}
 There are a few package options:
-\begin{beschreibung}
- \Option{verbose}\newline
-   Inform when patching is successful and warn if it fails. This is the default
-   behaviour.
- \Option{silent}\newline
-   Neither inform nor warn if patching succeeds or fails.
- \Option{errors}\newline
-   Issue an error instead of a warning if patching fails.
- \Option{shortcuts}\newline
-   (Re-) Define shortcuts for common logos to use the newly patched \paket{hologo}
-   logos: \cmd{TeX} \TeX, \cmd{LaTeX} \LaTeX, \cmd{LaTeXe} \LaTeXe, \cmd{LaTeXTeX}
-   \LaTeXTeX, \cmd{pdfTeX} \pdfTeX, \cmd{pdfLaTeX} \pdfLaTeX, \cmd{XeTeX} \XeTeX,
-   \cmd{XeLaTeX} \XeLaTeX, \cmd{LuaTeX} \LuaTeX, \cmd{LuaLaTeX} \LuaLaTeX. This
-   is default behaviour.
- \Option{noshortcuts}\newline
-   Don't (re-) define above mentioned logos.
-\end{beschreibung}
-\secidx*{Options}
+\begin{options}
+  \opt{verbose}
+    Inform when patching is successful and warn if it fails. This is the
+    default behaviour.
+  \opt{silent}
+    Neither inform nor warn if patching succeeds or fails.
+  \opt{errors}
+    Issue an error instead of a warning if patching fails.
+  \opt{shortcuts}
+    (Re-) Define shortcuts for common logos to use the newly patched
+    \pkg{hologo} logos: \cs{TeX} \TeX, \cs{LaTeX} \LaTeX, \cs{LaTeXe} \LaTeXe,
+    \cs{LaTeXTeX} \LaTeXTeX, \cs{pdfTeX} \pdfTeX, \cs{pdfLaTeX} \pdfLaTeX,
+    \cs{XeTeX} \XeTeX, \cs{XeLaTeX} \XeLaTeX, \cs{LuaTeX} \LuaTeX,
+    \cs{LuaLaTeX} \LuaLaTeX. This is default behaviour.
+  \opt{noshortcuts}
+    Don't (re-) define above mentioned logos.
+\end{options}
 
-\section{Usage}\secidx{Usage}
-The \paket{hologo} package by Heiko Oberdiek provides a comprehensive list of and
-access to the most common \TeX-related logos. However, the kerning values it uses
-are optimized for use with \TeX's standard font, Computer Modern. I happen to
-like the Linux Libertine O and Linux Biolinum O fonts very much. They are used
-in this documentation as well. Unfortunately many of the logos look bad with these
-fonts to say the least:
+\section{Usage}
+The \pkg{hologo} package by Heiko Oberdiek provides a comprehensive list of
+and access to the most common \TeX-related logos. However, the kerning values
+it uses are optimized for use with \TeX's standard font, Computer Modern. I
+happen to like the Linux Libertine~O and Linux Biolinum~O fonts very
+much. They are used in this documentation as well. Unfortunately many of the
+logos look bad with these fonts to say the least:
 
-\begin{beispiel}
- \restorelogos\huge
- \LaTeX, \XeLaTeX, \LaTeXTeX \par
- \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
+\begin{example}
+  \restorelogos\huge
+  \LaTeX, \XeLaTeX, \LaTeXTeX \par
+  \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
  
- \sffamily
- \LaTeX, \XeLaTeX, \LaTeXTeX \par
- \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
-\end{beispiel}
+  \sffamily
+  \LaTeX, \XeLaTeX, \LaTeXTeX \par
+  \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
+\end{example}
 
-What \lbthlpt does is it checks if one of these fonts is used and changes the
-kerning then:
+What \libertinehologopatch\ does is it checks if one of these fonts is used
+and changes the kerning then:
 
-\begin{beispiel}
- \huge
- \LaTeX, \XeLaTeX, \LaTeXTeX \par
- \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
+\begin{example}
+  \huge
+  \LaTeX, \XeLaTeX, \LaTeXTeX \par
+  \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
  
- \sffamily
- \LaTeX, \XeLaTeX, \LaTeXTeX \par
- \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
-\end{beispiel}
+  \sffamily
+  \LaTeX, \XeLaTeX, \LaTeXTeX \par
+  \textit{\LaTeX, \XeLaTeX, \LaTeXTeX}
+\end{example}
 
-All you have to do is load the package in the usual \LaTeXe{} way:
-\begin{beispiel}[code only]
- \usepackage{libertinehologopatch}
-\end{beispiel}
+All you have to do is load the package in the usual \LaTeXe\ way:
+\begin{sourcecode}
+  \usepackage{libertinehologopatch}
+\end{sourcecode}
 and all the logos will be patched appropriately.
 
-\lbthlpt defines additional user macros:
-\begin{beschreibung}
- \Befehl{restorelogos}\newline
-   Restores the original definitions of the logo commands, the scope is local.
- \Befehl{originallogo}{<logo>}\newline
-   This command takes the same argument as \cmd{hologo} and outputs the unpatched
-   version of the respective logo. It uses \cmd{restorelogos} internally.
- \Befehl{Originallogo}{<logo>}\newline
-   This command takes the same argument as \cmd{Hologo} and outputs the unpatched
-   version of the respective uppercased logo. It uses \cmd{restorelogos} internally.
-\end{beschreibung}
-\secidx*{Usage}
+\libertinehologopatch\ defines additional user macros:
+\begin{commands}
+  \command{restorelogos}
+    Restores the original definitions of the logo commands, the scope is
+    local.
+  \command{originallogo}[\marg{logo}]
+    This command takes the same argument as \cs{hologo} and outputs the
+    unpatched version of the respective logo. It uses \cs{restorelogos}
+    internally.
+  \command{Originallogo}[\marg{logo}]
+    This command takes the same argument as \cs{Hologo} and outputs the
+    unpatched version of the respective uppercased logo. It uses
+    \cs{restorelogos} internally.
+\end{commands}
 
 \section{Implementation}
-\implementation
+\implementation{libertinehologopatch.sty}
 
-\printindex
+\cleardoublepage
 
 \end{document}
